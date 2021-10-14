@@ -348,3 +348,46 @@ int Relaciones_CalcularPromedioPP(ePedido vectorPedidos[],int tamPedidos,eClient
 
 	return retorno;
 }
+
+int Relaciones_InformarClientesConMasPedidosPendientes(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes)
+{
+	int retorno;
+	//int cantidadMayorAnterior;
+	int cantidadMayor;
+	int i;
+	//int j;
+	int index;
+	retorno=0;
+
+	//cantidadMayor = Relaciones_CalcularPedidosPendientesPorCliente(vectorClientes[0], vectorPedidos, tamPedidos);
+
+	for(i=0;i<tamPedidos;i++)
+	{
+		if(vectorPedidos[i].isEmpty==OCUPADO && strcmp(vectorPedidos[i].estado,"PENDIENTE")==0)
+		{
+
+			index = eClientes_BuscarPorID(vectorClientes, tamClientes, vectorPedidos[i].idClientes);
+
+			if(index!=-1)
+			{
+				//cantidadMayorAnterior = Relaciones_CalcularPedidosPendientesPorCliente(vectorClientes[index], vectorPedidos, tamPedidos);
+				if(i==0||Relaciones_CalcularPedidosPendientesPorCliente(vectorClientes[index], vectorPedidos, tamPedidos)>cantidadMayor)
+				{
+
+					cantidadMayor = Relaciones_CalcularPedidosPendientesPorCliente(vectorClientes[index], vectorPedidos, tamPedidos);
+					retorno = 1;
+					index = eClientes_BuscarPorID(vectorClientes, tamClientes, vectorPedidos[i].idClientes);
+
+				}
+
+			}
+		}
+	}
+
+	printf("\nCLIENTE CON MAYOR CANTIDAD DE PEDIDOS PENDIENTES: \n");
+	eClientes_MostrarUno(vectorClientes[index]);
+	printf("\nTOTAL DE PEDIDOS: %d\n",cantidadMayor);
+
+
+	return retorno;
+}

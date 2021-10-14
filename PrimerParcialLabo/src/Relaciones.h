@@ -32,4 +32,8 @@ int Relaciones_FiltrarPedidosPendientesPorLocalidad(ePedido vectorPedidos[],int 
 int Relaciones_InformarPromedioPP(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes);
 int Relaciones_CalcularPromedioPP(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes,float* promedio);
 
+
+
+int Relaciones_InformarClientesConMasPedidosPendientes(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes);
+
 #endif /* RELACIONES_H_ */
