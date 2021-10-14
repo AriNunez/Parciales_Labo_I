@@ -28,4 +28,6 @@ int utn_getCuitCuil(char* pResultado,char* mensaje,char* mensajeError,int limite
 
 int utn_getTelefono(char* pResultado,char* mensaje,char* mensajeError,int limite,int reintentos);
 
+int utn_getDireccion(char* pResultado,char* mensaje,char* mensajeError,int limite,int reintentos);
+
 #endif /* UTN_H_ */

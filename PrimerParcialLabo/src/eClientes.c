@@ -14,6 +14,9 @@
 
 //---INICIALIZACION Y BUSQUEDA---//
 
+/// \brief Inicializa el campo isEmpty todas las posiciones de un vector del tipo eClientes en LIBRE (1).
+/// \param vector Vector del tipo eClientes.
+/// \param tam Dato de tipo int que reperesenta la cantidad de posiciones del vector.
 void eClientes_Inicializar(eClientes vector[],int tam)
 {
 	int i;
@@ -27,6 +30,10 @@ void eClientes_Inicializar(eClientes vector[],int tam)
 	}
 }
 
+/// \brief Recorre un vector del tipo eClientes y busca el primer espacio LIBRE del vector.
+/// \param vector Vector del tipo eClientes.
+/// \param tam Dato de tipo int que reperesenta la cantidad de posiciones del vector.
+/// \return Retorna el valor del indice el cual representa un espacio LIBRE del vector(>=0 EXITO) y -1 (ERROR) en caso de no encontrar espacio LIBRE.
 int eClientes_ObtenerIndexLibre(eClientes vector[],int tam)
 {
 	int i;
@@ -49,6 +56,11 @@ int eClientes_ObtenerIndexLibre(eClientes vector[],int tam)
 	return retorno;
 }
 
+/// \brief Recorre un vector del tipo eCliente buscando coincidencia entre el id buscado y los id del vector, si encuentra coincidencia devuelve el indice que representa la posicion donde se encuentra en el vector
+/// \param vector Vector del tipo eClientes.
+/// \param tam Dato de tipo int que reperesenta la cantidad de posiciones del vector.
+/// \param id Dato del tipo int que representa el id buscado.
+/// \return Retorna el valor del indice que representa la posicion en el vector del id buscado(>=0 EXITO) y -1 (ERROR) en caso de no encontrar el id buscado.
 int eClientes_BuscarPorID(eClientes vector[],int tam,int id)
 {
 	int i;
@@ -71,11 +83,17 @@ int eClientes_BuscarPorID(eClientes vector[],int tam,int id)
 	return retorno;
 }
 
+/// \brief Recibe un elemento del tipo eClientes e imprime los datos que contiene.
+/// \param elemento Dato del tipo eCliente.
 void eClientes_MostrarUno(eClientes elemento)
 {
 	printf("|%-15d|%-35s|%-15s|%-35s|%-35s|\n",elemento.idClientes,elemento.nombreEmpresa,elemento.cuit,elemento.direccion,elemento.localidad);
 }
 
+/// \brief Recibe un vector del tipo eClientes, lo recorre e imprime los datos que corresponden a cada posicion del vector si el campo isEmpty se encuentra en OCUPADO (0).
+/// \param vector Vector del tipo eClientes.
+/// \param tam Dato de tipo int que reperesenta la cantidad de posiciones del vector.
+/// \return Retorna 1 (EXITO) en caso de poder imprimir 1 o mas elementos del vector y 0 (ERROR) en caso de no poder imprimir ningun elemento.
 int eClientes_MostrarTodos(eClientes vector[],int tam)
 {
 	int i;
@@ -108,6 +126,10 @@ int eClientes_MostrarTodos(eClientes vector[],int tam)
 	return retorno;
 }
 
+/// \brief Recibe un vector del tipo eClientes, lo recorre y contabiliza la cantidad de elemento del vector que encuentre con el campo isEmpty en OCUPADO (0).
+/// \param vector Vector del tipo eClientes.
+/// \param tam Dato de tipo int que reperesenta la cantidad de posiciones del vector.
+/// \return Retorna la cantidad de elementos contabilizados. (>0 EXITO) o (==0 SI NO SE ENCONTRO NINGUN ELEMENTO)
 int eClientes_CalcularCantidadDeClientesEnAlta(eClientes vector[],int tam)
 {
 	int i;
@@ -131,6 +153,9 @@ int eClientes_CalcularCantidadDeClientesEnAlta(eClientes vector[],int tam)
 
 //---ABM---//
 
+/// \brief Realiza la carga de datos en una variable auxiliar, luego de verificar que la carga sea correcta, devuelve los datos cargador por referencia.
+/// \param elemento Puntero a un dato del tipo eClientes.
+/// \return Retorna 1 (EXITO) en caso de que la carga haya sido correcta y 0 (ERROR) en caso de que la carga haya sido erronea.
 int eClientes_CargarDatos(eClientes* elemento)
 {
 	int retorno;
@@ -144,9 +169,9 @@ int eClientes_CargarDatos(eClientes* elemento)
 		{
 			if(utn_getCuitCuil(auxiliar.cuit, "\nIngrese el CUIT de la empresa (NO SE ADMITEN '-'):", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
 			{
-				if(utn_getTexto(auxiliar.direccion, "\nIngrese la direccion de la empresa: \n", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
+				if(utn_getDireccion(auxiliar.direccion, "\nIngrese la direccion de la empresa: \n", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
 				{
-					if(utn_getTexto(auxiliar.localidad, "\nIngrese la localidad donde se encuentra la empresa: \n", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
+					if(utn_getDireccion(auxiliar.localidad, "\nIngrese la localidad donde se encuentra la empresa: \n", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
 					{
 						retorno = 1;
 						*elemento = auxiliar;
@@ -158,6 +183,10 @@ int eClientes_CargarDatos(eClientes* elemento)
 	return retorno;
 }
 
+/// \brief Recibe el elemento del vector del tipo eClientes que se quiere modificar, realiza una nueva carga de datos y en caso de ser correcta, devuelve los datos modificados por referencia.
+/// \param elementoParaModificar Dato del tipo eClientes.
+/// \param elementoModificado Puntero a un dato del tipo eClientes
+/// \return Retorna 1 (EXITO) en caso de que la modificacion haya sido correcta y 0 (ERROR) en caso de que la modificacion haya sido erronea.
 int eClientes_ModificarUno(eClientes elementoParaModificar,eClientes* elementoModificado)
 {
 	int retorno;
@@ -168,9 +197,9 @@ int eClientes_ModificarUno(eClientes elementoParaModificar,eClientes* elementoMo
 
 	if(elementoModificado != NULL && elementoParaModificar.isEmpty == OCUPADO)
 	{
-		if(utn_getTexto(auxiliar.direccion, "\nIngrese la nueva direccion de la empresa: \n", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
+		if(utn_getDireccion(auxiliar.direccion, "\nIngrese la nueva direccion de la empresa: \n", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
 		{
-			if(utn_getTexto(auxiliar.localidad, "\nIngrese la nueva localidad donde se encuentra la empresa: \n", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
+			if(utn_getDireccion(auxiliar.localidad, "\nIngrese la nueva localidad donde se encuentra la empresa: \n", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
 			{
 				retorno = 1;
 				*elementoModificado = auxiliar;
@@ -180,6 +209,11 @@ int eClientes_ModificarUno(eClientes elementoParaModificar,eClientes* elementoMo
 	return retorno;
 }
 
+/// \brief Recibe un vector del tipo eClientes y su tamanio, busca un espacio libre en el vector y realiza la carga de datos necesaria para dar el ALTA luego de verificar que sea correcta. Por ultimo, devuelve el idAutoincremental aumentado.
+/// \param vector Vector del tipo eClientes.
+/// \param tam Dato de tipo int que reperesenta la cantidad de posiciones del vector.
+/// \param idAutoincremental Puntero a un dato del tipo int que representa un idAutoincremental.
+/// \return Retorna 1 (EXITO) en caso de que el ALTA haya sido correcta y 0 (ERROR) en caso de que el ALTA haya sido erronea.
 int eClientes_Alta(eClientes vector[],int tam,int* idAutoincremental)
 {
 	int retorno;
@@ -188,34 +222,43 @@ int eClientes_Alta(eClientes vector[],int tam,int* idAutoincremental)
 	int idAux;
 
 	retorno = 0;
-	index = eClientes_ObtenerIndexLibre(vector, tam);
-	idAux = *idAutoincremental+1;
 
-	if(index != -1)
+	if(vector != NULL && tam > 0 && idAutoincremental != NULL)
 	{
-		if(eClientes_CargarDatos(&auxiliar)==1)
+		idAux = *idAutoincremental+1;
+		index = eClientes_ObtenerIndexLibre(vector, tam);
+
+		if(index != -1)
 		{
-			retorno = 1;
-		}
-		else
-		{
-			retorno = -1;
-		}
+			if(eClientes_CargarDatos(&auxiliar)==1)
+			{
+				retorno = 1;
+			}
+			else
+			{
+				retorno = -1;
+			}
 
-		if(retorno == 1)
-		{
-			auxiliar.idClientes = idAux;
+			if(retorno == 1)
+			{
+				auxiliar.idClientes = idAux;
 
-			auxiliar.isEmpty = OCUPADO;
+				auxiliar.isEmpty = OCUPADO;
 
-			vector[index] = auxiliar;
+				vector[index] = auxiliar;
 
-			*idAutoincremental = idAux;
+				*idAutoincremental = idAux;
+			}
 		}
 	}
 	return retorno;
 }
 
+/// \brief Recibe un vector del tipo eClientes y su tamanio, muestra los clientes en ALTA y pide seleccionar uno, si se confirma se dara de baja el cliente seleccionado. Por ultimo devuelve el id del cliente por referencia.
+/// \param vectorClientes Vector del tipo eClientes.
+/// \param tamClientes Dato de tipo int que reperesenta la cantidad de posiciones del vector.
+/// \param idParaBaja Puntero a un dato del tipo int que representa el id del cliente que se dio de baja.
+/// \return Retorna 1 (EXITO) en caso de que la BAJA haya sido correcta y 0 (ERROR) en caso de que la BAJA haya sido erronea.
 int eClientes_Baja(eClientes vectorClientes[],int tamClientes,int* idParaBaja)
 {
 	int retorno;
@@ -227,34 +270,41 @@ int eClientes_Baja(eClientes vectorClientes[],int tamClientes,int* idParaBaja)
 	retorno = 0;
 	flagMostrados = 0;
 
-	if(eClientes_MostrarTodos(vectorClientes, tamClientes) == 1)
+	if(vectorClientes != NULL && tamClientes > 0 && idParaBaja != NULL)
 	{
-		flagMostrados = 1;
-	}
-
-	if(flagMostrados == 1)
-	{
-		if(utn_getInt(&idBaja, "\nIngrese un ID para dar de baja: \n", "¡ERROR!\n", 1, 3000000, 0)==0)
+		if(eClientes_MostrarTodos(vectorClientes, tamClientes) == 1)
 		{
-			while(eClientes_BuscarPorID(vectorClientes, tamClientes, idBaja)==-1)
-			{
-				puts("NO EXISTE ID.");
-				utn_getInt(&idBaja, "\nIngrese un ID para dar de baja: \n", "¡ERROR!\n", 1, 3000000, 0);
-			}
+			flagMostrados = 1;
 		}
 
-		index = eClientes_BuscarPorID(vectorClientes, tamClientes, idBaja);
-
-		if(utn_getCharParaContinuar(&confirmacion, "\n¿DESEA CONTINUAR? S/N\n", "¡ERROR!\n", 'S', 'N', 3)==0 && confirmacion == 'S')
+		if(flagMostrados == 1)
 		{
-			vectorClientes[index].isEmpty = LIBRE;
-			retorno = 1;
-			*idParaBaja = idBaja;
+			if(utn_getInt(&idBaja, "\nIngrese un ID para dar de baja: \n", "¡ERROR!\n", 1, 3000000, 5)==0)
+			{
+				while(eClientes_BuscarPorID(vectorClientes, tamClientes, idBaja)==-1)
+				{
+					puts("NO EXISTE ID.");
+					utn_getInt(&idBaja, "\nIngrese un ID para dar de baja: \n", "¡ERROR!\n", 1, 3000000, 5);
+				}
+			}
+
+			index = eClientes_BuscarPorID(vectorClientes, tamClientes, idBaja);
+
+			if(utn_getCharParaContinuar(&confirmacion, "\n¿DESEA CONTINUAR? S/N\n", "¡ERROR!\n", 'S', 'N', 3)==0 && confirmacion == 'S')
+			{
+				vectorClientes[index].isEmpty = LIBRE;
+				retorno = 1;
+				*idParaBaja = idBaja;
+			}
 		}
 	}
 	return retorno;
 }
 
+/// \brief Recibe un vector del tipo eClientes y su tamanio, muestra los clientes en ALTA y pide seleccionar uno para poder modificarlo,
+/// \param vector Vector del tipo eClientes.
+/// \param tam Dato de tipo int que reperesenta la cantidad de posiciones del vector.
+/// \return Retorna 1 (EXITO) en caso de que la MODIFICACION haya sido correcta y 0 (ERROR) en caso de que la MODIFICACION haya sido erronea.
 int eClientes_Modificacion(eClientes vector[],int tam)
 {
 	int retorno;
@@ -264,34 +314,36 @@ int eClientes_Modificacion(eClientes vector[],int tam)
 	char confirmacion;
 	eClientes buffer;
 
-	if(eClientes_MostrarTodos(vector, tam)==1)
+	if(vector != NULL && tam > 0)
 	{
-		flagMostrados = 1;
-	}
-
-	if(flagMostrados == 1)
-	{
-		if(utn_getInt(&idModificacion, "Ingrese un ID para modificar: \n", "¡ERROR!\n", 1, 3000000, 0)==0)
+		if(eClientes_MostrarTodos(vector, tam)==1)
 		{
-			while(eClientes_BuscarPorID(vector, tam, idModificacion)==-1)
-			{
-				puts("NO EXISTE ID.");
-				utn_getInt(&idModificacion, "Ingrese un ID para modificar: \n", "¡ERROR!\n", 1, 3000000, 0);
-			}
+			flagMostrados = 1;
+		}
 
-			index = eClientes_BuscarPorID(vector, tam, idModificacion);
-
-			if(eClientes_ModificarUno(vector[index], &buffer)==1)
+		if(flagMostrados == 1)
+		{
+			if(utn_getInt(&idModificacion, "Ingrese un ID para modificar: \n", "¡ERROR!\n", 1, 3000000, 5)==0)
 			{
-				if(utn_getCharParaContinuar(&confirmacion, "¿DESEA CONTINUAR? S/N\n", "¡ERROR!\n", 'S', 'N', 3)==0 && confirmacion == 'S')
+				while(eClientes_BuscarPorID(vector, tam, idModificacion)==-1)
 				{
-					vector[index] = buffer;
-					retorno = 1;
+					puts("NO EXISTE ID.");
+					utn_getInt(&idModificacion, "Ingrese un ID para modificar: \n", "¡ERROR!\n", 1, 3000000, 5);
+				}
+
+				index = eClientes_BuscarPorID(vector, tam, idModificacion);
+
+				if(eClientes_ModificarUno(vector[index], &buffer)==1)
+				{
+					if(utn_getCharParaContinuar(&confirmacion, "¿DESEA CONTINUAR? S/N\n", "¡ERROR!\n", 'S', 'N', 3)==0 && confirmacion == 'S')
+					{
+						vector[index] = buffer;
+						retorno = 1;
+					}
 				}
 			}
 		}
 	}
-
 	return retorno;
 }
 

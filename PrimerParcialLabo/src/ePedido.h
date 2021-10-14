@@ -21,11 +21,11 @@
 //---ESTRUCTURA---//
 typedef struct {
 	int idPedido;
-	int cantidadKilosTotales;
-	int HPPE;
-	int LDPE;
-	int PP;
-	int restoDesechados;
+	float cantidadKilosTotales;
+	float HPPE;
+	float LDPE;
+	float PP;
+	float restoDesechados;
 	char estado[10];
 	int isEmpty;
 	int idClientes;
@@ -40,6 +40,7 @@ int ePedido_ObtenerIndexLibre(ePedido vector[],int tam);
 int ePedido_BuscarPorID(ePedido vector[],int tam,int id);
 void ePedido_MostrarUno(ePedido elemento);
 int ePedido_MostrarTodos(ePedido vector[],int tam);
+int ePedido_MostrarPendientes(ePedido vector[],int tam);
 
 //---ABM---//
 
@@ -50,7 +51,7 @@ int ePedido_Baja(ePedido vector[],int tam);
 int ePedido_Modificacion(ePedido vector[],int tam);
 int ePedido_ProcesarPedido(ePedido vector[],int tam);
 int ePedido_ProcesarResiduos(ePedido elementoParaProcesar,ePedido* elementoProcesado);
-int ePedido_MostrarPendientes(ePedido vector[],int tam);
+
 //---ORDENAMIENTOS Y LISTADOS FUNCIONALES---//
 
 

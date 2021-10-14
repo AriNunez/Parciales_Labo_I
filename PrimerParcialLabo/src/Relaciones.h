@@ -10,18 +10,24 @@
 
 #include "ePedido.h"
 
+//3)
 int Relaciones_BajaDeClienteConPedidos(eClientes vectorClientes[],int tamClientes,ePedido vectorPedidos[],int tamPedidos);
 
+//6)
 int Relaciones_ImprimirClientesConPedidosPendientes(eClientes vectorClientes[],int tamClientes,ePedido vectorPedidos[],int tamPedidos);
 int Relaciones_CalcularPedidosPendientesPorCliente(eClientes cliente,ePedido vectorPedidos[],int tamPedidos);
 
+//7)
 int Relaciones_ImprimirPedidosPendientes(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes);
 
+//8)
 int Relaciones_ImprimirPedidosProcesados(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes);
 
+//9)
 int Relaciones_InformarPedidosPendientesPorLocalidad(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes);
 int Relaciones_FiltrarPedidosPendientesPorLocalidad(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes,int* cantidadPendientes);
 
+//10)
 int Relaciones_InformarPromedioPP(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes);
 int Relaciones_CalcularPromedioPP(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes,float* promedio);
 

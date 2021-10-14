@@ -635,6 +635,73 @@ static int isValidTelefono(char* telefono)
 	}
 	return retorno;
 }
+
+//-------------------PRUEBA DIRECCION-----------
+static int getDireccion(char* pResultado,int limite);
+static int isValidDireccion(char* telefono);
+
+int utn_getDireccion(char* pResultado,char* mensaje,char* mensajeError,int limite,int reintentos)
+{
+	int retorno = -1;
+	char bufferString[limite];
+
+	if(pResultado != NULL && mensaje != NULL && mensajeError != NULL && reintentos >= 0)
+	{
+		retorno = -2;
+
+		do
+		{
+			printf("%s", mensaje);
+			if(getDireccion(bufferString,limite) == 0)
+			{
+				retorno = 0;
+				strncpy(pResultado,bufferString,limite);
+				break;
+			}
+
+			printf("%s",mensajeError);
+			reintentos--;
+
+		}while(reintentos >=0);
+	}
+	return retorno;
+}
+
+static int getDireccion(char* pResultado,int limite)
+{
+	int retorno = -1;
+	char buffer[limite];
+
+		if(pResultado != NULL)
+		{
+			if(myGets(buffer,sizeof(buffer))==0 && isValidDireccion(buffer))
+			{
+				strncpy(pResultado,buffer,limite);
+				retorno = 0;
+			}
+		}
+		return retorno;
+}
+
+static int isValidDireccion(char* direccion)
+{
+	int retorno = 1;
+	int i = 0;
+
+	if(direccion != NULL && strlen(direccion) > 0)
+	{
+		while(direccion[i] != '\0')
+		{
+			if((direccion[i] < '0' || direccion[i] > '9')&&(direccion[i]<'a'||direccion[i]>'z')&&(direccion[i]<'A'||direccion[i]>'Z')&&(direccion[i]!=' '))
+			{
+				retorno = 0;
+				break;
+			}
+			i++;
+		}
+	}
+	return retorno;
+}
 //-----------------FUNCION PRINCIPAL-----------------------
 
 /// \brief Lee un stdin (lo que lee por consola) hasta que encuentra un '\n' o hasta que haya copiado en cadena un maximo de 'longitud - 1' caracteres.

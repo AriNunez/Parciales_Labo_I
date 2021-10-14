@@ -7,6 +7,12 @@
 
 #include "Relaciones.h"
 
+/// \brief Se ejecuta al momento en que se da de BAJA un cliente. Da de BAJA los pedidos que se relacionen con el cliente dado de BAJA.
+/// \param vectorClientes Vector del tipo eClientes.
+/// \param tamClientes Dato de tipo int que reperesenta la cantidad de posiciones del vectorClientes.
+/// \param vectorPedidos Vector del tipo ePedido.
+/// \param tamPedidos Dato de tipo int que reperesenta la cantidad de posiciones del vectorPedidos.
+/// \return Retorna 1 (EXITO) en caso de que la BAJA haya sido correcta y 0 (ERROR) en caso de que la BAJA haya sido erronea.
 int Relaciones_BajaDeClienteConPedidos(eClientes vectorClientes[],int tamClientes,ePedido vectorPedidos[],int tamPedidos)
 {
 	int retorno;
@@ -15,20 +21,29 @@ int Relaciones_BajaDeClienteConPedidos(eClientes vectorClientes[],int tamCliente
 
 	retorno = 0;
 
-	if(eClientes_Baja(vectorClientes, tamClientes,&idBaja)==1)
+	if(vectorClientes != NULL && tamClientes > 0 && vectorPedidos != NULL && tamPedidos > 0)
 	{
-		for(i=0;i<tamPedidos;i++)
+		if(eClientes_Baja(vectorClientes, tamClientes,&idBaja)==1)
 		{
-			if((strcmp(vectorPedidos[i].estado,"COMPLETADO")==0 || strcmp(vectorPedidos[i].estado,"PENDIENTE")==0) && vectorPedidos[i].isEmpty == OCUPADO && vectorPedidos[i].idClientes == idBaja)
+			retorno = 1;
+			for(i=0;i<tamPedidos;i++)
 			{
-				vectorPedidos[i].isEmpty = LIBRE;
-				retorno = 1;
+				if((strcmp(vectorPedidos[i].estado,"COMPLETADO")==0 || strcmp(vectorPedidos[i].estado,"PENDIENTE")==0) && vectorPedidos[i].isEmpty == OCUPADO && vectorPedidos[i].idClientes == idBaja)
+				{
+					vectorPedidos[i].isEmpty = LIBRE;
+				}
 			}
 		}
 	}
 	return retorno;
 }
 
+/// \brief Informa una lista de clientes en ALTA con la cantidad de pedidos PENDIENTES.
+/// \param vectorClientes Vector del tipo eClientes.
+/// \param tamClientes Dato de tipo int que reperesenta la cantidad de posiciones del vectorClientes.
+/// \param vectorPedidos Vector del tipo ePedido.
+/// \param tamPedidos Dato de tipo int que reperesenta la cantidad de posiciones del vectorPedidos.
+/// \return Retorna 1 (EXITO) en caso de poder imprimir 1 o mas clientes con pedidos PENDIENTES y 0 (ERROR) en caso de no poder imprimir cliente con pedidos PENDIENTES.
 int Relaciones_ImprimirClientesConPedidosPendientes(eClientes vectorClientes[],int tamClientes,ePedido vectorPedidos[],int tamPedidos)
 {
 	int retorno;
@@ -81,6 +96,11 @@ int Relaciones_ImprimirClientesConPedidosPendientes(eClientes vectorClientes[],i
 	return retorno;
 }
 
+/// \brief Recorre un vector del tipo ePedido y calcula la cantidad de pedidos PENDIENTES que relaciona con el elemento del tipo eClientes recibido.
+/// \param cliente Dato del tipo eClientes.
+/// \param vectorPedidos Vector del tipo ePedido.
+/// \param tamPedidos Dato de tipo int que reperesenta la cantidad de posiciones del vectorPedidos.
+/// \return Retorna 1 (EXITO) en caso de contabilizar 1 o mas pedidos PENDIENTES y 0 (ERROR) en caso de no contabilizar ningun pedido PENDIENTE.
 int Relaciones_CalcularPedidosPendientesPorCliente(eClientes cliente,ePedido vectorPedidos[],int tamPedidos)
 {
 	int cantidadPedidos;
@@ -103,6 +123,14 @@ int Relaciones_CalcularPedidosPendientesPorCliente(eClientes cliente,ePedido vec
 }
 
 
+
+
+/// \brief Informa una lista de pedidos PENDIENTES con datos del cliente y un dato del pedido.
+/// \param vectorPedidos Vector del tipo ePedido.
+/// \param tamPedidos Dato de tipo int que reperesenta la cantidad de posiciones del vectorPedidos.
+/// \param vectorClientes Vector del tipo eClientes.
+/// \param tamClientes Dato de tipo int que reperesenta la cantidad de posiciones del vectorClientes.
+/// \return
 int Relaciones_ImprimirPedidosPendientes(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes)
 {
 	int retorno;
@@ -120,13 +148,17 @@ int Relaciones_ImprimirPedidosPendientes(ePedido vectorPedidos[],int tamPedidos,
 			if(vectorPedidos[i].isEmpty == OCUPADO && strcmp(vectorPedidos[i].estado,"PENDIENTE")==0)
 			{
 				index = eClientes_BuscarPorID(vectorClientes, tamClientes, vectorPedidos[i].idClientes);
-				printf("|%-15s|%-35s|%-30d|\n",vectorClientes[index].cuit,vectorClientes[index].direccion,vectorPedidos[i].cantidadKilosTotales);
+				printf("|%-15s|%-35s|%-30.2f|\n",vectorClientes[index].cuit,vectorClientes[index].direccion,vectorPedidos[i].cantidadKilosTotales);
 			}
 		}
 	}
 
 	return retorno;
 }
+
+
+
+
 
 int Relaciones_ImprimirPedidosProcesados(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes)
 {
@@ -145,13 +177,17 @@ int Relaciones_ImprimirPedidosProcesados(ePedido vectorPedidos[],int tamPedidos,
 			if(vectorPedidos[i].isEmpty == OCUPADO && strcmp(vectorPedidos[i].estado,"COMPLETADO")==0)
 			{
 				index = eClientes_BuscarPorID(vectorClientes, tamClientes, vectorPedidos[i].idClientes);
-				printf("|%-15s|%-35s|%-15d|%-15d|%-15d|\n",vectorClientes[index].cuit,vectorClientes[index].direccion,vectorPedidos[i].HPPE,vectorPedidos[i].LDPE,vectorPedidos[i].PP);
+				printf("|%-15s|%-35s|%-15.2f|%-15.2f|%-15.2f|\n",vectorClientes[index].cuit,vectorClientes[index].direccion,vectorPedidos[i].HPPE,vectorPedidos[i].LDPE,vectorPedidos[i].PP);
 			}
 		}
 	}
 
 	return retorno;
 }
+
+
+
+
 
 int Relaciones_InformarPedidosPendientesPorLocalidad(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes)
 {
@@ -217,6 +253,10 @@ int Relaciones_FiltrarPedidosPendientesPorLocalidad(ePedido vectorPedidos[],int 
 	return retorno;
 }
 
+
+
+
+
 int Relaciones_InformarPromedioPP(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes)
 {
 	int retorno;
@@ -245,7 +285,7 @@ int Relaciones_CalcularPromedioPP(ePedido vectorPedidos[],int tamPedidos,eClient
 {
 	int retorno;
 	int cantidadClientes;
-	int acumuladorPP;
+	float acumuladorPP;
 	int i;
 
 	retorno = 0;
@@ -264,7 +304,7 @@ int Relaciones_CalcularPromedioPP(ePedido vectorPedidos[],int tamPedidos,eClient
 					retorno = 1;
 				}
 			}
-			*promedio = (float)acumuladorPP / cantidadClientes;
+			*promedio = acumuladorPP / cantidadClientes;
 		}
 		else
 		{
