@@ -130,7 +130,7 @@ int Relaciones_CalcularPedidosPendientesPorCliente(eClientes cliente,ePedido vec
 /// \param tamPedidos Dato de tipo int que reperesenta la cantidad de posiciones del vectorPedidos.
 /// \param vectorClientes Vector del tipo eClientes.
 /// \param tamClientes Dato de tipo int que reperesenta la cantidad de posiciones del vectorClientes.
-/// \return
+/// \return Retorna 1(EXITO) si pudo imprimir algun dato y 0(ERROR) si no.
 int Relaciones_ImprimirPedidosPendientes(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes)
 {
 	int retorno;
@@ -147,6 +147,7 @@ int Relaciones_ImprimirPedidosPendientes(ePedido vectorPedidos[],int tamPedidos,
 		{
 			if(vectorPedidos[i].isEmpty == OCUPADO && strcmp(vectorPedidos[i].estado,"PENDIENTE")==0)
 			{
+				retorno = 1;
 				index = eClientes_BuscarPorID(vectorClientes, tamClientes, vectorPedidos[i].idClientes);
 				printf("|%-15s|%-35s|%-30.2f|\n",vectorClientes[index].cuit,vectorClientes[index].direccion,vectorPedidos[i].cantidadKilosTotales);
 			}
@@ -159,7 +160,12 @@ int Relaciones_ImprimirPedidosPendientes(ePedido vectorPedidos[],int tamPedidos,
 
 
 
-
+/// \brief Informa una lista de pedidos COMPLETADOS o procesados con datos del cliente y tres dato del pedido.
+/// \param vectorPedidos Vector del tipo ePedido.
+/// \param tamPedidos Dato de tipo int que reperesenta la cantidad de posiciones del vectorPedidos.
+/// \param vectorClientes Vector del tipo eClientes.
+/// \param tamClientes Dato de tipo int que reperesenta la cantidad de posiciones del vectorClientes.
+/// \return Retorna 1(EXITO) si pudo imprimir algun dato y 0(ERROR) si no.
 int Relaciones_ImprimirPedidosProcesados(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes)
 {
 	int retorno;
@@ -176,6 +182,7 @@ int Relaciones_ImprimirPedidosProcesados(ePedido vectorPedidos[],int tamPedidos,
 		{
 			if(vectorPedidos[i].isEmpty == OCUPADO && strcmp(vectorPedidos[i].estado,"COMPLETADO")==0)
 			{
+				retorno = 1;
 				index = eClientes_BuscarPorID(vectorClientes, tamClientes, vectorPedidos[i].idClientes);
 				printf("|%-15s|%-35s|%-15.2f|%-15.2f|%-15.2f|\n",vectorClientes[index].cuit,vectorClientes[index].direccion,vectorPedidos[i].HPPE,vectorPedidos[i].LDPE,vectorPedidos[i].PP);
 			}
@@ -188,8 +195,13 @@ int Relaciones_ImprimirPedidosProcesados(ePedido vectorPedidos[],int tamPedidos,
 
 
 
-
-int Relaciones_InformarPedidosPendientesPorLocalidad(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes)
+/// \brief Informa si una localidad tiene pedidos PENDIENTES o no.
+/// \param vectorPedidos Vector del tipo ePedido.
+/// \param tamPedidos Dato de tipo int que reperesenta la cantidad de posiciones del vectorPedidos.
+/// \param vectorClientes Vector del tipo eClientes.
+/// \param tamClientes Dato de tipo int que reperesenta la cantidad de posiciones del vectorClientes.
+/// \return Retorna 1(EXITO) si hay al menos un pedido PENDIENTE en la localidad y 0(ERROR) si no.
+int Relaciones_InformarPedidosPendientesPorLocalidad(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes,eLocalidad vectorLocalidad[],int tamLocalidad)
 {
 	int retorno;
 	int cantidadPedidos;
@@ -198,7 +210,7 @@ int Relaciones_InformarPedidosPendientesPorLocalidad(ePedido vectorPedidos[],int
 
 	if(vectorPedidos != NULL && tamPedidos > 0 && vectorClientes != NULL && tamClientes > 0)
 	{
-		if(Relaciones_FiltrarPedidosPendientesPorLocalidad(vectorPedidos, tamPedidos, vectorClientes, tamClientes, &cantidadPedidos)==1)
+		if(Relaciones_FiltrarPedidosPendientesPorLocalidad(vectorPedidos, tamPedidos, vectorClientes, tamClientes, &cantidadPedidos,vectorLocalidad,tamLocalidad)==1)
 		{
 			printf("\nCANTIDAD DE PEDIDOS PENDIENTES EN ESA LOCALIDAD: %d\n",cantidadPedidos);
 			retorno = 1;
@@ -211,12 +223,19 @@ int Relaciones_InformarPedidosPendientesPorLocalidad(ePedido vectorPedidos[],int
 	return retorno;
 }
 
-
-int Relaciones_FiltrarPedidosPendientesPorLocalidad(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes,int* cantidadPendientes)
+/// \brief Solicita una localidad y busca si hay coincidencia con alguna localidad en ingresada, si encuentra coincidencia contabiliza la cantidad de pedidos PENDIENTES.
+/// \param vectorPedidos Vector del tipo ePedido.
+/// \param tamPedidos Dato de tipo int que reperesenta la cantidad de posiciones del vectorPedidos.
+/// \param vectorClientes Vector del tipo eClientes.
+/// \param tamClientes Dato de tipo int que reperesenta la cantidad de posiciones del vectorClientes.
+/// \param cantidadPendientes Puntero a una variable del tipo int.
+/// \return Retorna 1(EXITO) en caso de contabilizar mas de un pedido PENDIENTE en la localidad y 0(ERROR) si no.
+int Relaciones_FiltrarPedidosPendientesPorLocalidad(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes,int* cantidadPendientes,eLocalidad vectorLocalidad[],int tamLocalidad)
 {
 	int retorno;
 	int i;
 	int j;
+	int a;
 	char bufferLocalidad[TAM_CADENACHAR];
 	int contadorPendientes;
 
@@ -234,10 +253,14 @@ int Relaciones_FiltrarPedidosPendientesPorLocalidad(ePedido vectorPedidos[],int 
 				{
 					for(j=0;j<tamClientes;j++)
 					{
-						if(vectorClientes[j].idClientes == vectorPedidos[i].idClientes && vectorClientes[j].isEmpty == OCUPADO && stricmp(bufferLocalidad,vectorClientes[j].localidad)==0)
+						for(a=0;a<tamLocalidad;a++)
 						{
-							contadorPendientes++;
+							if(vectorClientes[j].idClientes == vectorPedidos[i].idClientes && vectorClientes[j].isEmpty == OCUPADO && vectorClientes[j].idLocalidad == vectorLocalidad[a].idLocalidad)
+							{
+								contadorPendientes++;
+							}
 						}
+
 					}
 				}
 			}
@@ -256,7 +279,12 @@ int Relaciones_FiltrarPedidosPendientesPorLocalidad(ePedido vectorPedidos[],int 
 
 
 
-
+/// \brief
+/// \param vectorPedidos Vector del tipo ePedido.
+/// \param tamPedidos Dato de tipo int que reperesenta la cantidad de posiciones del vectorPedidos.
+/// \param vectorClientes Vector del tipo eClientes.
+/// \param tamClientes Dato de tipo int que reperesenta la cantidad de posiciones del vectorClientes.
+/// \return
 int Relaciones_InformarPromedioPP(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes)
 {
 	int retorno;
@@ -280,7 +308,13 @@ int Relaciones_InformarPromedioPP(ePedido vectorPedidos[],int tamPedidos,eClient
 	return retorno;
 }
 
-
+/// \brief
+/// \param vectorPedidos Vector del tipo ePedido.
+/// \param tamPedidos Dato de tipo int que reperesenta la cantidad de posiciones del vectorPedidos.
+/// \param vectorClientes Vector del tipo eClientes.
+/// \param tamClientes Dato de tipo int que reperesenta la cantidad de posiciones del vectorClientes.
+/// \param promedio
+/// \return
 int Relaciones_CalcularPromedioPP(ePedido vectorPedidos[],int tamPedidos,eClientes vectorClientes[],int tamClientes,float* promedio)
 {
 	int retorno;

@@ -15,8 +15,8 @@
 #include "utn.h"
 
 //---DEFINE---//
-#define LIBRE 1
-#define OCUPADO 0
+//#define LIBRE 1
+//#define OCUPADO 0
 
 //---ESTRUCTURA---//
 typedef struct {

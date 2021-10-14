@@ -12,23 +12,27 @@
 #include <stdlib.h>
 #include "Relaciones.h"
 
-#define QTY_CLIENTES 100
-#define QTY_PEDIDOS 1000
+#define QTY_CLIENTES 3
+#define QTY_PEDIDOS 5
+#define QTY_LOCALIDADES 2
 
 int main(void)
 {
 	setbuf(stdout,NULL);
 
 	eClientes clientes[QTY_CLIENTES];//={{1,"TOYOTA S.A.","38124567890","AVENIDA MITRE 555","AVELLANEDA",OCUPADO},{2,"FORD S.A.","38126539870","AVENIDA LIBERTADOR 666","CABA",OCUPADO},{3,"INODOROS VOLADORES S.A.","38147531590","9 DE JULIO 1200","LANUS",OCUPADO}};
-	ePedido pedidos[QTY_PEDIDOS];//={{1001,1200,0,0,0,0,"PENDIENTE",OCUPADO,1},{1002,2000,0,0,0,0,"PENDIENTE",OCUPADO,3},{1003,350,0,0,0,0,"PENDIENTE",OCUPADO,2},{1004,500,0,0,0,0,"PENDIENTE",OCUPADO,1},{1005,120,0,0,0,0,"PENDIENTE",OCUPADO,3}};
+	ePedido pedidos[QTY_PEDIDOS]={{1001,1200,0,0,0,0,"PENDIENTE",OCUPADO,1},{1002,2000,0,0,0,0,"PENDIENTE",OCUPADO,3},{1003,350,0,0,0,0,"PENDIENTE",OCUPADO,2},{1004,500,0,0,0,0,"PENDIENTE",OCUPADO,1},{1005,120,0,0,0,0,"PENDIENTE",OCUPADO,3}};
+	eLocalidad localidades[QTY_LOCALIDADES]={{201,"AVELLANEDA",OCUPADO},{202,"CABA",OCUPADO}};
 	int opciones;
 	int idClientes;
 	int idPedidos;
+	//int idLocalidad;
 	int retornoAlta;
 	int flagAltaClientes;
 
 	idClientes = 0;
 	idPedidos = 1000;
+	//idLocalidad = 200;
 	flagAltaClientes = 0;
 
 	eClientes_Inicializar(clientes, QTY_CLIENTES);
@@ -45,7 +49,7 @@ int main(void)
 			switch(opciones)
 			{
 				case 1:
-					retornoAlta = eClientes_Alta(clientes, QTY_CLIENTES, &idClientes);
+					retornoAlta = eClientes_Alta(clientes, QTY_CLIENTES, &idClientes,localidades,QTY_LOCALIDADES);
 					if(retornoAlta==1)
 					{
 						printf("\nCliente DADO DE ALTA EXITOSAMENTE con ID %d\n",idClientes);
@@ -133,7 +137,7 @@ int main(void)
 					break;
 
 				case 9:
-					Relaciones_InformarPedidosPendientesPorLocalidad(pedidos, QTY_PEDIDOS, clientes, QTY_CLIENTES);
+					Relaciones_InformarPedidosPendientesPorLocalidad(pedidos, QTY_PEDIDOS, clientes, QTY_CLIENTES,localidades,QTY_LOCALIDADES);
 					break;
 
 				case 10:

@@ -12,10 +12,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "utn.h"
+#include "eLocalidad.h"
 
 //---DEFINE---//
-#define LIBRE 1
-#define OCUPADO 0
+/*#define LIBRE 1
+#define OCUPADO 0*/
 #define TAM_CADENACHAR 30
 
 //---ESTRUCTURA---//
@@ -24,7 +25,7 @@ typedef struct {
 	char nombreEmpresa[TAM_CADENACHAR];
 	char cuit[TAM_CADENACHAR];
 	char direccion[TAM_CADENACHAR];
-	char localidad[TAM_CADENACHAR];
+	int idLocalidad;
 	int isEmpty;
 }eClientes;
 
@@ -41,9 +42,11 @@ int eClientes_CalcularCantidadDeClientesEnAlta(eClientes vector[],int tam);
 
 //---ABM---//
 
-int eClientes_CargarDatos(eClientes* elemento);
+//int eClientes_CargarDatos(eClientes* elemento);
+int eClientes_CargarDatos(eClientes* elemento,eLocalidad vectorLocalidad[],int tamLocalidad);
 int eClientes_ModificarUno(eClientes elementoParaModificar,eClientes* elementoModificado);
-int eClientes_Alta(eClientes vector[],int tam,int* idAutoincremental);
+//int eClientes_Alta(eClientes vector[],int tam,int* idAutoincremental);
+int eClientes_Alta(eClientes vector[],int tam,int* idAutoincremental,eLocalidad vectorLocalidad[], int tamLocalidad);
 int eClientes_Baja(eClientes vectorClientes[],int tamClientes,int* idParaBaja);
 int eClientes_Modificacion(eClientes vector[],int tam);
 

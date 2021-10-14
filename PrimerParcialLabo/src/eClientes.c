@@ -10,6 +10,7 @@
 
 
 
+
 									//---FUNCIONES---//
 
 //---INICIALIZACION Y BUSQUEDA---//
@@ -87,7 +88,7 @@ int eClientes_BuscarPorID(eClientes vector[],int tam,int id)
 /// \param elemento Dato del tipo eCliente.
 void eClientes_MostrarUno(eClientes elemento)
 {
-	printf("|%-15d|%-35s|%-15s|%-35s|%-35s|\n",elemento.idClientes,elemento.nombreEmpresa,elemento.cuit,elemento.direccion,elemento.localidad);
+	printf("|%-15d|%-35s|%-15s|%-35s|%-35d|\n",elemento.idClientes,elemento.nombreEmpresa,elemento.cuit,elemento.direccion,elemento.idLocalidad);
 }
 
 /// \brief Recibe un vector del tipo eClientes, lo recorre e imprime los datos que corresponden a cada posicion del vector si el campo isEmpty se encuentra en OCUPADO (0).
@@ -156,7 +157,7 @@ int eClientes_CalcularCantidadDeClientesEnAlta(eClientes vector[],int tam)
 /// \brief Realiza la carga de datos en una variable auxiliar, luego de verificar que la carga sea correcta, devuelve los datos cargador por referencia.
 /// \param elemento Puntero a un dato del tipo eClientes.
 /// \return Retorna 1 (EXITO) en caso de que la carga haya sido correcta y 0 (ERROR) en caso de que la carga haya sido erronea.
-int eClientes_CargarDatos(eClientes* elemento)
+int eClientes_CargarDatos(eClientes* elemento,eLocalidad vectorLocalidad[],int tamLocalidad)//CAMBIOOOOOOOOOOOOOOOOOOOOOOO
 {
 	int retorno;
 	eClientes auxiliar;
@@ -171,7 +172,8 @@ int eClientes_CargarDatos(eClientes* elemento)
 			{
 				if(utn_getDireccion(auxiliar.direccion, "\nIngrese la direccion de la empresa: \n", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
 				{
-					if(utn_getDireccion(auxiliar.localidad, "\nIngrese la localidad donde se encuentra la empresa: \n", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
+					eLocalidad_MostrarTodos(vectorLocalidad, tamLocalidad);
+					if(utn_getInt(&auxiliar.idLocalidad, "\nIngrese la localidad donde se encuentra la empresa: \n", "¡ERROR!\n", 201,202, 5)==0)
 					{
 						retorno = 1;
 						*elemento = auxiliar;
@@ -199,11 +201,11 @@ int eClientes_ModificarUno(eClientes elementoParaModificar,eClientes* elementoMo
 	{
 		if(utn_getDireccion(auxiliar.direccion, "\nIngrese la nueva direccion de la empresa: \n", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
 		{
-			if(utn_getDireccion(auxiliar.localidad, "\nIngrese la nueva localidad donde se encuentra la empresa: \n", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
-			{
+			//if(utn_getDireccion(auxiliar.localidad, "\nIngrese la nueva localidad donde se encuentra la empresa: \n", "¡ERROR!\n", TAM_CADENACHAR, 3)==0)
+			//{
 				retorno = 1;
 				*elementoModificado = auxiliar;
-			}
+			//}
 		}
 	}
 	return retorno;
@@ -213,8 +215,8 @@ int eClientes_ModificarUno(eClientes elementoParaModificar,eClientes* elementoMo
 /// \param vector Vector del tipo eClientes.
 /// \param tam Dato de tipo int que reperesenta la cantidad de posiciones del vector.
 /// \param idAutoincremental Puntero a un dato del tipo int que representa un idAutoincremental.
-/// \return Retorna 1 (EXITO) en caso de que el ALTA haya sido correcta y 0 (ERROR) en caso de que el ALTA haya sido erronea.
-int eClientes_Alta(eClientes vector[],int tam,int* idAutoincremental)
+/// \return Retorna 1 (EXITO) en caso de que el ALTA haya sido correcta, 0 (ERROR) en caso de que el ALTA haya sido erronea y -1(ERROR) en caso de que la carga de datos haya sido erronea.
+int eClientes_Alta(eClientes vector[],int tam,int* idAutoincremental,eLocalidad vectorLocalidad[], int tamLocalidad) //CAMBIOOOOOO
 {
 	int retorno;
 	eClientes auxiliar;
@@ -230,7 +232,7 @@ int eClientes_Alta(eClientes vector[],int tam,int* idAutoincremental)
 
 		if(index != -1)
 		{
-			if(eClientes_CargarDatos(&auxiliar)==1)
+			if(eClientes_CargarDatos(&auxiliar,vectorLocalidad,tamLocalidad)==1)
 			{
 				retorno = 1;
 			}
